@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
+import User from '../model/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class AdminService {
   private readonly comments_for_approval_url = 'http://localhost:8080/admin/comment/all'
   private readonly approve_comment_url = 'http://localhost:8080/admin/approve/comment/'
   private readonly delete_comment_url = 'http://localhost:8080/admin/delete/comment/'
+
+  private readonly get_all_users_url = 'http://localhost:8080/admin/users/all'
+  private readonly upgrade_to_admin_url = 'http://localhost:8080/admin/upgrade/'
+  private readonly downgrade_to_user_url = 'http://localhost:8080/admin/downgrade/'
 
   constructor(private http: HttpClient) { }
 
@@ -45,6 +50,19 @@ export class AdminService {
 
   deleteComment(id: number) {
     return this.http.delete(this.delete_comment_url + id);
+  }
+
+  getAllUsers() {
+    return this.http.get<User[]>(this.get_all_users_url);
+  }
+
+  upgadeToAdmin(id: number) {
+    console.log(id)
+    return this.http.put(this.upgrade_to_admin_url + id, Object);
+  }
+
+  downgradeToUser(id: number) {
+    return this.http.put(this.downgrade_to_user_url + id, Object);
   }
 
 }

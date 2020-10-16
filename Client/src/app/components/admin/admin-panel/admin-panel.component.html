@@ -46,6 +46,25 @@
         </div>
     </div> -->
 
+    <div class="row mt-4 mb-2" *ngIf="isRootAdmin()">
+      <div class="col-4 bg-dark rounded m-auto" style="height: 30vh; overflow: auto">
+         <h3 class="mySticky bg-gray text-white rounded text-center">All Users</h3>
+         <div style="height: 30px;" class="mt-3 rounded badge-success" *ngFor="let user of allUsers$ | async">
+          <span >{{user.username}}</span>
+          <span *ngIf="userIsAdmin(user.roles)">  ROLE:ADMIN</span>
+          <span *ngIf="!userIsAdmin(user.roles)">  ROLE:USER</span>
+
+          <a *ngIf="userIsAdmin(user.roles)"  class="btn btn-primary btn-sm  text-danger"
+          style="float: right"
+          (click) = toUser(user.id)>To User</a>
+
+          <a *ngIf="!userIsAdmin(user.roles)" class="btn btn-primary btn-sm  text-danger"
+          style="float: right"
+          (click) = toAdmin(user.id) >To Admin</a>
+         </div>
+      </div>
+  </div>
+
       <app-post-details-admin  *ngIf="post"
       [post] = "post" 
       (approve) = clearPage()

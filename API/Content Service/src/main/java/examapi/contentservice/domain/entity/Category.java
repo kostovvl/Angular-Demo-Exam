@@ -33,7 +33,7 @@ public class Category extends BaseEntity {
         this.createdOn = createdOn;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     public Set<Post> getPosts() {
         return posts;
     }

@@ -37,6 +37,10 @@ export class AuthService {
   isAdmin() {
     return localStorage.getItem('roles').includes('ADMIN');
   }
+
+  isRootAdmin() {
+    return localStorage.getItem('roles').includes('ROOT_ADMIN');
+  }
   
   isNotAuthenticated() {
     return localStorage.getItem('token') === null;

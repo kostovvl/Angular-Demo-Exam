@@ -74,7 +74,7 @@ public class Post extends BaseEntity{
         this.category = category;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     public Set<Comment> getComments() {
         return comments;
     }
