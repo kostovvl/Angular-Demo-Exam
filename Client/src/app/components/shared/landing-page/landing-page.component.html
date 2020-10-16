@@ -1,0 +1,10 @@
+<div class="jumbotron"
+style="background-image:
+ url(https://images.unsplash.com/photo-1552152974-19b9caf99137?fit=crop&w=1350&q=80);">
+    <h1 class="display-3" *ngIf="isAuthenticated()">Hello, {{username}}!</h1>
+    <h1 class="display-3" *ngIf="!isAuthenticated()">Hello, Guest!</h1>
+    <p class="lead">This is a simple demo Forum App. It uses Angular for front end Client and 
+    Java-Spring Boot for back end with REST microservice architecture.</p>
+  </div>
+  <app-all-categories></app-all-categories>
+  

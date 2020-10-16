@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="row">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4">
+        <h1 class="text-center" >Edit Post</h1>
+        <form [formGroup] = "form" (submit) = submit()> 
+          <div class="form-group input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+            </div>
+            <input class="form-control" placeholder="{{post.title}}" formControlName = "title">
+          </div>
+          <div class="alert alert-danger" *ngIf="f.title.errors?.required && f.title.touched" >
+              This field is required
+          </div>
+          <div class="form-group input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+            </div>
+            <input class="form-control" placeholder="{{post.content}}" type="textarea" formControlName = "content" >
+          </div>
+          <div class="alert alert-danger" *ngIf="f.content.errors?.required && f.content.touched" >
+            This field is required
+        </div>
+      <select class="form-control" formControlName = "categoryId" >
+        <option value="{{category.id}}" *ngFor="let category of categories$ | async" >{{category.name}}</option>
+      </select>
+    <div class="alert alert-danger" *ngIf="f.categoryId.errors?.required && f.categoryId.touched" >
+      Select Category
+  </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Submit Post </button>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-4"></div>
+    </div>
+  </div>
+

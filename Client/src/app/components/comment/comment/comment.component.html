@@ -1,0 +1,22 @@
+<div class="card border-primary mb-3" style="max-width: 120rem;">
+  <div class="card-header">Creator: {{comment.creatorName}}</div>
+    <div class="card-body">
+      <p>Comment: </p>
+      <p class="card-text">{{comment.content}}</p>
+      <div *ngIf="canUpdate(comment.creatorId)">
+      <a class="btn btn-sm" (click) = editComment() role="button">Edit</a>
+      <a class="btn btn-sm" (click) = deleteComment(comment.id) role="button">Delete</a>
+      </div>
+    </div>
+    <div *ngIf="toEdit">
+      <form [formGroup] = "form" (submit) = submit()>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+            </div>
+            <input class="form-control" placeholder="{{comment.content}}"  formControlName = "content">
+            <button type="submit" class="btn btn-sm"> submit </button>
+        </div>
+      </form>
+    </div>
+  </div>
