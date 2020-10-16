@@ -64,4 +64,8 @@ public class UserEntity {
     public void setRoles(Set<UserEntityRole> roles) {
         this.roles = roles;
     }
+
+    public void addRole(UserEntityRole newRole) {
+        this.roles.add(newRole);
+    }
 }

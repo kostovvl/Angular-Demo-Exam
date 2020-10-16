@@ -65,5 +65,22 @@ public class AdminController {
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
+    @GetMapping("/users/all")
+    public ResponseEntity<?>getAllUsers() {
+        return new ResponseEntity<>(this.adminClient.allUsers(), HttpStatus.OK);
+    }
+
+    @PutMapping("/upgrade/{id}")
+    public ResponseEntity<?>updateToAdmin(@PathVariable(name = "id") long id) {
+        this.adminClient.updateToAdmin(id);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @PutMapping("/downgrade/{id}")
+    public ResponseEntity<?>downgradeToUser(@PathVariable(name = "id") long id) {
+        this.adminClient.downgradeToUser(id);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 
 }

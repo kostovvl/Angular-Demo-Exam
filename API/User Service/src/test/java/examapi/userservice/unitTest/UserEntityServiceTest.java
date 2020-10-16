@@ -2,8 +2,8 @@ package examapi.userservice.unitTest;
 
 import examapi.userservice.domain.dto.UserEntityDto;
 import examapi.userservice.domain.entity.UserEntity;
-import examapi.userservice.domain.entity.UserEntityRole;
 import examapi.userservice.repository.UserEntityRepository;
+import examapi.userservice.repository.UserEntityRoleRepository;
 import examapi.userservice.service.UserEntityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +23,7 @@ public class UserEntityServiceTest {
     private UserEntityService userEntityService;
     private UserEntityDto userEntityDtoAdmin;
     private UserEntityDto userEntityRoleUser;
+    private UserEntityRoleRepository userEntityRoleRepository;
     private UserEntity userEntityAdmin;
     private UserEntity userEntityUser;
 
@@ -33,7 +34,7 @@ public class UserEntityServiceTest {
     @BeforeEach()
     public void setUp() {
         //Initialize Service
-        this.userEntityService = new UserEntityService(this.userEntityRepository, new ModelMapper());
+        this.userEntityService = new UserEntityService(this.userEntityRepository, this.userEntityRoleRepository, new ModelMapper());
 
         //Initialize Entities
         this.userEntityDtoAdmin = new UserEntityDto();

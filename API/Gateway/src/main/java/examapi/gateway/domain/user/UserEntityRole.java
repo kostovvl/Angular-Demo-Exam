@@ -8,6 +8,11 @@ public class UserEntityRole {
     public UserEntityRole() {
     }
 
+    public UserEntityRole(String role) {
+        this.role = role;
+    }
+
+
     public long getId() {
         return id;
     }

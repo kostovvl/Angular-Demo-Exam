@@ -7,6 +7,8 @@ import examapi.gateway.domain.comment.commentuser.Comment;
 import examapi.gateway.domain.post.postadmin.PostAdmin;
 import examapi.gateway.domain.post.postadmin.PostAdminContainer;
 import examapi.gateway.domain.post.postuser.Post;
+import examapi.gateway.domain.user.UserEntity;
+import examapi.gateway.domain.user.UserEntityContainer;
 import examapi.gateway.innerSecurity.ApiKey;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -65,5 +67,20 @@ public class AdminClient {
     public void deleteComment(long commentId) {
         this.restTemplate.delete(Global.Admin_Service_Url + "/comments/delete/"
         + commentId + "/" + this.apiKey.getKey());
+    }
+
+    public List<UserEntity>allUsers() {
+        return this.restTemplate.getForObject(Global.User_Service_Url + "/all/" + this.apiKey.getKey(),
+                UserEntityContainer.class).getAll();
+    }
+
+    public void updateToAdmin(long id) {
+        this.restTemplate.put(Global.User_Service_Url + "/update/" + id + "/" + this.apiKey.getKey(),
+                Object.class);
+    }
+
+    public void downgradeToUser(long id) {
+        this.restTemplate.put(Global.User_Service_Url + "/downgrade/" + id + "/" + this.apiKey.getKey(),
+                Object.class);
     }
 }
