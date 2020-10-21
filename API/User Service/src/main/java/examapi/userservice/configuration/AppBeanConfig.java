@@ -1,5 +1,6 @@
 package examapi.userservice.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import examapi.userservice.innerSecurity.ApiKey;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,10 @@ public class AppBeanConfig {
         return new ApiKey();
     }
 
-
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 
 
 }

@@ -1,9 +1,11 @@
 package examapi.userservice.integrationTest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import examapi.userservice.domain.dto.UserEntityDto;
 import examapi.userservice.innerSecurity.ApiKey;
 import examapi.userservice.repository.UserEntityRepository;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
@@ -33,19 +36,28 @@ public class UserControllerTest {
     private UserEntityRepository userEntityRepository;
 
     @Autowired
-    public ApiKey apiKey;
+    private ApiKey apiKey;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private static final String apiPass = "123456";
+    private UserEntityDto user1;
 
     @BeforeEach
     public void setUp() {
         this.userEntityRepository.deleteAll();
 
-        UserEntityDto newUser = new UserEntityDto();
-        newUser.setUsername("Vlado");
-        newUser.setPassword("123456");
-        this.apiKey.setKey(apiPass);
+        this.user1 = new UserEntityDto();
+        this.user1.setUsername("Vlado");
+        this.user1.setPassword("123456");
 
+        this.apiKey.setKey(apiPass);
+    }
+
+    @AfterEach()
+    public void setDown() {
+        this.userEntityRepository.deleteAll();
     }
 
     @Test
@@ -54,7 +66,7 @@ public class UserControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/register/" + apiPass)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"username\": \"Vlado\", \"password\": \"123456\" }")
+                .content(this.objectMapper.writeValueAsString(this.user1))
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
 
@@ -63,22 +75,28 @@ public class UserControllerTest {
 
     @Test
     public void shouldFindAlreadyRegisteredUser() throws Exception {
-        //assert
+        //arrange
+        String username = this.user1.getUsername();
+
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/register/" + apiPass)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"username\": \"Smail\", \"password\": \"123456\" }")
+                .content(this.objectMapper.writeValueAsString(this.user1))
                 .accept(MediaType.APPLICATION_JSON)
         );
 
-        String username = this.userEntityRepository.findByUsername("Smail").orElse(null).getUsername();
-        System.out.println();
-
-
-        //act/assert
-        this.mockMvc.perform(MockMvcRequestBuilders
+        //act
+        MvcResult result =  this.mockMvc.perform(MockMvcRequestBuilders
                 .get("/login/" + username + "/" + apiPass)
-        ).andExpect(status().isOk());
+        ).andReturn();
+
+        UserEntityDto result1 = this.objectMapper.readValue(result.getResponse().getContentAsString(),
+                UserEntityDto.class);
+
+
+       //assert
+        Assertions.assertEquals(username, result1.getUsername());
+
     }
 
 }
